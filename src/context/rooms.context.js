@@ -1,30 +1,29 @@
 /* eslint-disable react/function-component-definition */
-import React,{ createContext, useState,useEffect}  from 'react';
+import React, { createContext, useState, useEffect, useContext } from 'react';
 import { database } from '../misc/firebase';
 import { transformToArrayWithId } from '../misc/helpers';
 
+const RoomsContext = createContext();
 
+export const RoomsProvider = ({ children }) => {
+  const [rooms, setRooms] = useState(null);
 
-const RoomsContext= createContext();
+  useEffect(() => {
+    const roomListRef = database.ref('rooms');
 
-export const RoomsProvider=({children})=>{
+    roomListRef.on('value', snap => {
+      const data = transformToArrayWithId(snap.val());
+      setRooms(data);
+    });
 
-    const [rooms,setRooms]=useState(null);
+    return () => {
+      roomListRef.off();
+    };
+  }, []);
 
-    useEffect(()=>{
-        const roomListRef= database.ref('rooms');
+  return (
+    <RoomsContext.Provider value={rooms}>{children}</RoomsContext.Provider>
+  );
+};
 
-        roomListRef.on('value',(snap)=>{
-            const data= transformToArrayWithId(snap.val());
-            setRooms(data);
-        });
-
-        return ()=>{
-            roomListRef.off();
-        };
-
-    },[]);
-
-    return <RoomsContext.Provider value={rooms}>{children}</RoomsContext.Provider>
-}
-
+export const useRooms = () => useContext(RoomsContext);
