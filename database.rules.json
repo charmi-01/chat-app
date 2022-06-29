@@ -12,6 +12,15 @@
           "$room_id":{
         ".read":"auth!== null",
         ".write":"auth!== null"
+          }
+          
+    },
+    "messages":{
+        ".read":"auth!== null",
+        ".write":"auth!== null",
+          "$message_id":{
+        ".read":"auth!== null",
+        ".write":"auth!== null"
       }
           
     },
