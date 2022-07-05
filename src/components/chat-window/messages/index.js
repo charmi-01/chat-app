@@ -28,6 +28,44 @@ function Messages() {
     };
   },[chatId]);
 
+  const handleDelete=useCallback(async (msgId)=>{
+
+    // eslint-disable-next-line no-alert
+    if(!window.confirm('Delete this message?')){
+      return ;
+    }
+
+    const isLast= messages[messages.length-1].id === msgId;
+
+    const updates={};
+
+    updates[`/messages/${msgId}`]= null;
+
+    if(isLast && messages.length>1){
+      updates[`/rooms/${chatId}/lastMessage`]= {
+        ...messages[messages.length-2],
+        msgId: messages[messages.length-2].id
+      }
+    }
+
+    if(isLast && messages.length===1){
+      updates[`/rooms/${chatId}/lastMessage`]=null;
+    }
+
+    try {
+
+      await database.ref().update(updates);
+      
+      Alert.info('Message has been deleted',3000);
+
+    } catch (err) {
+      Alert.error(err.message,3000);
+    }
+
+
+
+  },[messages,chatId])
+
   const handleLike=useCallback(async (msgId)=>{
 
     const {uid}= auth.currentUser;
@@ -91,7 +129,9 @@ function Messages() {
       {isChatEmpty && <li>No messages yet</li>}
       {canShowMessages && messages.map(msg=><MessageItem key={msg.id} message={msg} 
       handleLike={handleLike}
-      handleAdmin={handleAdmin}/>)}
+      handleAdmin={handleAdmin}
+      handleDelete={handleDelete}
+      />)}
 
     </ul>
   )
