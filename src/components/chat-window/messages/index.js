@@ -1,7 +1,8 @@
+/* eslint-disable consistent-return */
 import React, { useCallback, useEffect, useState } from 'react'
 import { useParams } from 'react-router';
 import {Alert} from 'rsuite';
-import {auth, database} from '../../../misc/firebase';
+import {auth, database, storage} from '../../../misc/firebase';
 import { transformToArrayWithId } from '../../../misc/helpers';
 import MessageItem from './MessageItem';
 
@@ -28,7 +29,7 @@ function Messages() {
     };
   },[chatId]);
 
-  const handleDelete=useCallback(async (msgId)=>{
+  const handleDelete=useCallback(async (msgId,file)=>{
 
     // eslint-disable-next-line no-alert
     if(!window.confirm('Delete this message?')){
@@ -59,12 +60,22 @@ function Messages() {
       Alert.info('Message has been deleted',3000);
 
     } catch (err) {
-      Alert.error(err.message,3000);
+      return Alert.error(err.message,3000);
+    }
+    if(file){
+
+      try {
+        
+        const fileRef= storage.refFromURL(file.url);
+        await fileRef.delete();
+      } catch (error) {
+        Alert.error(error.message);
+      }
     }
 
 
 
-  },[messages,chatId])
+  },[messages,chatId]);
 
   const handleLike=useCallback(async (msgId)=>{
 
@@ -137,4 +148,4 @@ function Messages() {
   )
 };
 
-export default Messages
+export default Messages;
