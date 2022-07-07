@@ -34,7 +34,7 @@ function DashboardToggle() {
       </Button>
       <Drawer
         full={isMobile}
-        size="sm"
+        size="xs"
         show={isOpen}
         onHide={close}
         placement="left"

@@ -21,6 +21,7 @@ const SignIn = () => {
       Alert.error(err.message, 4000);
     }
   };
+  
   const onFacebookSignin = () => {
     signInWithProvider(new firebase.auth.FacebookAuthProvider());
   };

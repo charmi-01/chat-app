@@ -1,5 +1,5 @@
 import React,{memo} from 'react';
-import {ButtonToolbar, Icon} from 'rsuite';
+import {ButtonToolbar, Icon,Divider} from 'rsuite';
 import { Link } from 'react-router-dom';
 import { useCurrentRoom } from '../../../context/current-room.context';
 import { useMediaQuery } from '../../../misc/custom-hooks';
@@ -14,21 +14,25 @@ function ChatTop() {
   return (
     <div>
       <div className='d-flex justify-content-between align-items-center'>
-        <h4  className='text-disappear d-flex align-items-center'>
-          <Icon componentClass={Link} to="/" icon="arrow-circle-left" size='2x'  
+        <Icon componentClass={Link} to="/" icon="arrow-circle-left" size='2x'  
           className={isMobile? 'd-inline-block p-0 mr-2 text-blue link-unstyled':'d-none'}/>
+        <h4  className='align-items-center'>
           <span className='text-disappear'>{name}</span>
         </h4>
-        <ButtonToolbar className='ws-nowrap'>
+        <div className='d-flex'>
+
+        <ButtonToolbar className='ws-nowrap mr-0'>
           {isAdmin &&
           <EditRoomInfoBtnDrawer/>
         }
         </ButtonToolbar>
+        </div>
       </div>
       <div className='d-flex justify-content-between align-items-center'>
           <span>todo</span>
           <RoomInfoBtnModal/>
       </div>
+      
     </div>
   )
 }

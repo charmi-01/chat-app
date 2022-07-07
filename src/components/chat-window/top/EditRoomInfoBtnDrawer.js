@@ -39,7 +39,7 @@ function EditRoomInfoBtnDrawer() {
   return (
     <div>
         <Button className='br-circle' size='sm' color='red' onClick={open}>
-            A
+            Edit
         </Button>
 
         <Drawer  full={isMobile} show={isOpen} onHide={close} placement="right">

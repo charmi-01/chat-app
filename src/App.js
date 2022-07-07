@@ -8,6 +8,7 @@ import './styles/main.scss';
 import { ProfileProvider } from './context/profile.context';
 import { ErrorBoundary } from './components/ErrorBoundary';
 
+
 const SignIn= lazy(()=>import('./pages/SignIn'));
 
 function App() {
